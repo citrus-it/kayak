@@ -109,10 +109,12 @@
 /*
  * Macros to reverse byte order
  */
+#if 0
 #define	BSWAP_8(x)	((x) & 0xff)
 #define	BSWAP_16(x)	((BSWAP_8(x) << 8) | BSWAP_8((x) >> 8))
 #define	BSWAP_32(x)	((BSWAP_16(x) << 16) | BSWAP_16((x) >> 16))
 #define	BSWAP_64(x)	((BSWAP_32(x) << 32) | BSWAP_32((x) >> 32))
+#endif
 
 #define	SPA_MINBLOCKSHIFT	9
 #define	SPA_OLDMAXBLOCKSHIFT	17
@@ -805,6 +807,8 @@ struct uberblock {
 	uint64_t	ub_timestamp;	/* UTC time of last sync	*/
 	blkptr_t	ub_rootbp;	/* MOS objset_phys_t		*/
 };
+
+typedef struct uberblock uberblock_t;
 
 /*
  * Flags.

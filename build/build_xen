@@ -22,23 +22,27 @@
 #
 # Copyright 2013 by Andrzej Szeszo. All rights reserved.
 # Copyright 2013 OmniTI Computer Consulting, Inc.  All rights reserved.
-# Copyright 2017 OmniOS Community Edition (OmniOSce) Association.
+# Copyright 2018 OmniOS Community Edition (OmniOSce) Association.
 # Use is subject to license terms.
 #
 
 [ "`id -u`" != 0 ] && echo Run this script as root && exit 1
 
-. install_help.sh 2>/dev/null
-. disk_help.sh
-. net_help.sh
-. xen_help.sh
+SRCDIR=`dirname $0`
+[ ${SRCDIR:0:1} = "/" ] || SRCDIR=`pwd`/$SRCDIR
+
+. $SRCDIR/../lib/install_help.sh 2>/dev/null
+. $SRCDIR/../lib/disk_help.sh
+. $SRCDIR/../lib/net_help.sh
+. $SRCDIR/../lib/xen_help.sh
 
 VMODE=hvm
 USEGRUB=0
 
-VERSION=`head -1 /etc/release | awk '{print $3}' | sed 's/[a-z]//g'`
-ZFSSEND=/kayak_image/kayak_r$VERSION.zfs.bz2
-PVGRUB=pv-grub.gz.d3950d8
+lVERSION="`head -1 /etc/release | awk '{print $3}' | sed 's/[a-z]//g'`"
+: ${VERSION:=$lVERSION}
+: ${ZFSSEND:=/kayak_image/kayak_r$VERSION.zfs.bz2}
+: ${PVGRUB:=pv-grub.gz.d3950d8}
 
 RPOOL=syspool
 BENAME=omnios
@@ -72,7 +76,8 @@ fi
 
 # Begin
 
-zpool destroy $RPOOL 2>/dev/null || true
+zpool destroy -f $RPOOL 2>/dev/null || true
+zpool labelclear -f ${DISK}s0
 
 if [ $VMODE = pv ]; then
     SetupPVPart
@@ -83,7 +88,7 @@ else
         SetupHVMPart
         zpool create -f $RPOOL ${DISK}s0
     else
-        # Use whole-disk EFI
+        # Use whole-disk EFI but without an EFI System Partition (ESP)
         zpool create -f $RPOOL ${DISK}
     fi
 fi
@@ -121,8 +126,11 @@ zpool export $RPOOL
 # to be imported under Xen.
 exit 0
 
-gmake zpool_patch
-./zpool_patch /dev/rdsk/${DISK}s0
+(
+    cd $SRCDIR/..
+    gmake bin/zpool_patch
+    ./bin/zpool_patch /dev/rdsk/${DISK}s0
+)
 
 zdb -e -CC $RPOOL | sed -n '/^Configuration for import/,/^$/p'
 
