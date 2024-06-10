@@ -24,7 +24,7 @@ trap 'rm -rf $dir' EXIT
 	    HOSTCFLAGS="-I/opt/ooce/include" \
 	    HOSTLDLIBS="-L/opt/ooce/lib/amd64 -lnsl -lsocket" \
 	    CROSS_COMPILE=/opt/cross/aarch64/bin/aarch64-unknown-solaris2.11- \
-	    ARCH=arm rpi_4_defconfig u-boot u-boot.bin
+	    ARCH=arm rpi_arm64_defconfig u-boot u-boot.bin
 )
 
 cp $dir/$PROG-$VER/$PROG.bin ./bin/$PROG.bin

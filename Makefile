@@ -146,7 +146,7 @@ zfsdestroy:
 # Raspberry Pi components
 
 RPIGITHUB=https://github.com/raspberrypi
-RPIFWVER=1.20230405
+RPIFWVER=1.20240529
 download-rpi-firmware: bin/firmware-$(RPIFWVER)
 bin/firmware-$(RPIFWVER):
 	curl -fLo bin/firmware-$(RPIFWVER).tar.gz \
