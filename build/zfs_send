@@ -267,7 +267,7 @@ if [ "$VARIANT" = nonglobal ]; then
     sed -i -e 's%^root::%root:$5$kr1VgdIt$OUiUAyZCDogH/uaxH71rMeQxvpDEY2yX.x0ZQRnmeb9:%' $MP/etc/shadow
 fi
 
-apply_custom_overlay $ZFS_CUSTOM_OVERLAY $MP
+apply_custom_overlay "$ZFS_CUSTOM_OVERLAY" "$MP"
 
 note "Creating compressed stream"
 zfs snapshot $ZDATASET@kayak || fail "snap"
