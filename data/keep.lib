@@ -276,6 +276,7 @@
 /usr/lib/devfsadm/linkmod/SUNW_zfs_link.so
 /usr/lib/fm/libtopo.so
 /usr/lib/fm/libtopo.so.1
+/usr/lib/fm/amd64/libtopo.so.1
 /usr/lib/fs/autofs/libshare_autofs.so.1
 /usr/lib/fs/fd/mount
 /usr/lib/fs/hsfs/fstyp.so.1
