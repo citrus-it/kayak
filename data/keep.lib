@@ -33,6 +33,7 @@
 /lib/amd64/libproc.so.1
 /lib/amd64/libpthread.so.1
 /lib/amd64/librcm.so.1
+/lib/amd64/libresolv.so.2
 /lib/amd64/librt.so.1
 /lib/amd64/librtld_db.so.1
 /lib/amd64/libscf.so.1
