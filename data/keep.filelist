@@ -143,6 +143,7 @@
 /usr/gnu/bin/sha1sum
 /usr/kernel/drv/amd64/bpf
 /usr/kernel/drv/amd64/dump
+/usr/kernel/drv/amd64/eventfd
 /usr/kernel/drv/amd64/fssnap
 /usr/kernel/drv/amd64/kstat
 /usr/kernel/drv/amd64/ksyms
@@ -152,9 +153,12 @@
 /usr/kernel/drv/amd64/pool
 /usr/kernel/drv/amd64/ptm
 /usr/kernel/drv/amd64/pts
+/usr/kernel/drv/amd64/signalfd
 /usr/kernel/drv/amd64/smbsrv
+/usr/kernel/drv/amd64/timerfd
 /usr/kernel/drv/bpf.conf
 /usr/kernel/drv/dump.conf
+/usr/kernel/drv/eventfd.conf
 /usr/kernel/drv/fssnap.conf
 /usr/kernel/drv/kstat.conf
 /usr/kernel/drv/ksyms.conf
@@ -164,7 +168,9 @@
 /usr/kernel/drv/pool.conf
 /usr/kernel/drv/ptm.conf
 /usr/kernel/drv/pts.conf
+/usr/kernel/drv/signalfd.conf
 /usr/kernel/drv/smbsrv.conf
+/usr/kernel/drv/timerfd.conf
 /usr/kernel/fs/amd64/fdfs
 /usr/kernel/fs/amd64/pcfs
 /usr/lib/pci/pcieadm
