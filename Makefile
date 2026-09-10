@@ -11,7 +11,7 @@
 
 #
 # Copyright 2017 OmniTI Computer Consulting, Inc.  All rights reserved.
-# Copyright 2023 OmniOS Community Edition (OmniOSce) Association.
+# Copyright 2026 OmniOS Community Edition (OmniOSce) Association.
 #
 
 ifeq ($(shell zonename),global)
@@ -92,7 +92,7 @@ $(BUILDSEND_MP)/aarch64_$(VERSION).zfs.xz:	build/zfs_send
 	@test -d "$(BUILDSEND_MP)" || (echo "$(BUILDSEND) missing" && false)
 	./$< -d $(BUILDSEND) -a aarch64 $(ZFS_SEND_ARGS) $(VERSION)
 
-$(BUILDSEND_MP)/miniroot.gz:	build/miniroot
+$(BUILDSEND_MP)/miniroot.gz:	build/miniroot $(wildcard data/keep.*)
 	@banner "MINIROOT"
 	if test -n "`zfs list -H -t snapshot $(BUILDSEND)/miniroot@fixup 2>/dev/null`"; then \
 	  VERSION=$(VERSION) DEBUG=$(DEBUG) ./$< $(BUILDSEND) fixup ; \
