@@ -13,7 +13,7 @@
 
 #
 # Copyright 2017 OmniTI Computer Consulting, Inc. All rights reserved.
-# Copyright 2018 OmniOS Community Edition (OmniOSce) Association.
+# Copyright 2026 OmniOS Community Edition (OmniOSce) Association.
 #
 
 RPOOL=${1:-rpool}
@@ -67,6 +67,10 @@ if [ -f /kayak/etc/rsyslog.xml ]; then
 	logcmd cp /kayak/etc/rsyslog.xml $ALTROOT/etc/svc/profile/site/
 	logadm_rsyslog $ALTROOT
 fi
+
+# Enable address space layout randomisation for all processes
+[ -f /kayak/etc/aslr.xml ] && \
+    logcmd cp /kayak/etc/aslr.xml $ALTROOT/etc/svc/profile/site/
 
 # Add extra repo (can be disabled in the configuration menu)
 extrarepo -on

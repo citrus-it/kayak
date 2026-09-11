@@ -12,7 +12,7 @@
 # http://www.illumos.org/license/CDDL.
 # }}}
 #
-# Copyright 2025 OmniOS Community Edition (OmniOSce) Association.
+# Copyright 2026 OmniOS Community Edition (OmniOSce) Association.
 #
 
 SRCDIR=`dirname $0`
@@ -65,9 +65,9 @@ customise() {
     img_permit_rootlogin $root without-password
     img_dedicated_home $root
 
-    log "... installing noautofs profile"
+    log "... installing SMF profiles"
     img_install_profile $root $SRCDIR/../etc/noautofs.xml
-
+    img_install_profile $root $SRCDIR/../etc/aslr.xml
     img_install_profile $root $SRCDIR/../etc/rsyslog.xml
     logadm_rsyslog $root
 
