@@ -24,7 +24,8 @@ dir=`/usr/gnu/bin/mktemp -d`
 	curl -fLO $URL
 	gtar -zxf $FILE
 	cd $PROG-$VER
-	./configure CFLAGS="-m32 -std=gnu17"
+	./configure CFLAGS="-m32 -std=gnu17" \
+	    LDFLAGS="-Wl,-M,/usr/lib/ld/map.noexdata"
 	gmake
 )
 
