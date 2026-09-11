@@ -11,7 +11,7 @@
 
 #
 # Copyright 2017 OmniTI Computer Consulting, Inc.  All rights reserved.
-# Copyright 2023 OmniOS Community Edition (OmniOSce) Association.
+# Copyright 2026 OmniOS Community Edition (OmniOSce) Association.
 #
 
 ifeq ($(shell zonename),global)
@@ -167,17 +167,20 @@ rpi-bins: $(RPI_BINS)
 ######################################################################
 # Binaries to build from source
 
+# 32-bit binaries are linked with a non-executable data segment (and heap)
+NOEXDATA=-Wl,-M,/usr/lib/ld/map.noexdata
+
 BINS=bin/takeover-console bin/ipcalc bin/dialog bin/passutil bin/mount_media \
 	 etc/kbd.list bin/zpool_patch
 
 bin/takeover-console:	src/takeover-console.c
-	gcc -m32 -o $@ $<
+	gcc -m32 $(NOEXDATA) -o $@ $<
 
 bin/passutil:	src/passutil.c
-	gcc -m32 -o $@ $<
+	gcc -m32 $(NOEXDATA) -o $@ $<
 
 bin/mount_media:	src/mount_media.c
-	gcc -m32 -std=gnu99 -o $@ $< -ldevinfo
+	gcc -m32 -std=gnu99 $(NOEXDATA) -o $@ $< -ldevinfo
 
 bin/zpool_patch:	src/zpool_patch.c
 	gcc -m64 -g -Wall -Wunused -g -Isrc/include -o $@ $< -lnvpair

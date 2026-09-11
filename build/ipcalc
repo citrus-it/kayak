@@ -1,6 +1,6 @@
 #!/bin/ksh
 
-# Copyright 2017 OmniOS Community Edition (OmniOSce) Association.
+# Copyright 2026 OmniOS Community Edition (OmniOSce) Association.
 
 MIRROR=https://mirrors.omnios.org
 PROG=ipcalc
@@ -15,6 +15,8 @@ dir=`/usr/gnu/bin/mktemp -d`
 	curl -fLO $URL
 	gtar -zxf $FILE
 	cd $PROG-$VER
+	# The makefile compiles and links in one step, so the linker mapfile
+	# for a non-executable data segment goes in CFLAGS.
 	# Remove 'ipcalc: ' prefix from error messages.
 	for f in *; do
 		[ -f "$f" ] || continue
@@ -25,7 +27,7 @@ dir=`/usr/gnu/bin/mktemp -d`
 		LIBS="-lsocket -lnsl -lresolv" \
 		USE_GEOIP=no \
 		USE_DYN_GEOIP=no \
-		CFLAGS="-m32 -D_KERNEL"
+		CFLAGS="-m32 -D_KERNEL -Wl,-M,/usr/lib/ld/map.noexdata"
 )
 
 out=$dir/$PROG-$VER/$PROG

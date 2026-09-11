@@ -12,7 +12,7 @@
 # http://www.illumos.org/license/CDDL.
 # }}}
 #
-# Copyright 2021 OmniOS Community Edition (OmniOSce) Association.
+# Copyright 2026 OmniOS Community Edition (OmniOSce) Association.
 #
 
 SRCDIR=`dirname $0`
@@ -54,10 +54,9 @@ customise() {
     # rsync needed for Vagrant
     img_install_pkg $root network/rsync cloud-init
 
-    log "... installing noautofs profile"
+    log "... installing SMF profiles"
     img_install_profile $root $SRCDIR/../etc/noautofs.xml
-
-    log "... installing rsyslog profile"
+    img_install_profile $root $SRCDIR/../etc/aslr.xml
     img_install_profile $root $SRCDIR/../etc/rsyslog.xml
     logadm_rsyslog $root
 
