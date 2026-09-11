@@ -11,7 +11,7 @@
 # http://www.illumos.org/license/CDDL.
 # }}}
 
-# Copyright 2019 OmniOS Community Edition (OmniOSce) Association.
+# Copyright 2026 OmniOS Community Edition (OmniOSce) Association.
 #
 # This script creates p5p archives of additional packages that will be added
 # to the installer media. Some will be automatically added to the image; for
@@ -21,7 +21,7 @@
 typeset -A pkg
 pkg['vmware']=(system/virtualization/open-vm-tools)
 pkg['iwn']=(driver/network/iwn)
-pkg['cloud-init']=(system/management/cloud-init pyyaml-311)
+pkg['cloud-init']=(system/management/cloud-init pyyaml-313)
 
 set -- `getopt d:o: $*`
 for i in $*
@@ -38,10 +38,18 @@ if [ -z "$OUTPUT" -o -z "$ORIGIN" ]; then
     exit 1
 fi
 
+typeset -i err=0
 for vm in ${!pkg[@]}; do
     rm -f $OUTPUT/$vm.p5p
-	pkgrecv -a -s $ORIGIN -d $OUTPUT/$vm.p5p -m latest ${pkg[$vm][*]}
+    if ! pkgrecv -a -s $ORIGIN -d $OUTPUT/$vm.p5p -m latest ${pkg[$vm][*]}; then
+        # A failed pkgrecv can leave an empty archive behind.
+        rm -f $OUTPUT/$vm.p5p
+        echo "Failed to create $vm.p5p"
+        err=1
+    fi
 done
+
+exit $err
 
 # Vim hints
 # vim:ts=4:sw=4:et:fdm=marker

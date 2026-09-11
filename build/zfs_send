@@ -12,7 +12,7 @@
 # }}}
 
 # Copyright 2017 OmniTI Computer Consulting, Inc. All rights reserved.
-# Copyright 2023 OmniOS Community Edition (OmniOSce) Association.
+# Copyright 2026 OmniOS Community Edition (OmniOSce) Association.
 #
 
 export PATH=/usr/bin:/usr/sbin:/sbin
@@ -283,7 +283,7 @@ xz -l $OUT
 # Also build .p5p files for various VM environments
 
 if [ $VARIANT = global ] && ((native)); then
-    $SRCDIR/extra_p5p -d $MPR -o $PKGURL
+    $SRCDIR/extra_p5p -d $MPR -o $PKGURL || fail "extra_p5p"
 fi
 
 ############################################################################

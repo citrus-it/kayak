@@ -13,7 +13,7 @@
 
 #
 # Copyright 2017 OmniTI Computer Consulting, Inc. All rights reserved.
-# Copyright 2019 OmniOS Community Edition (OmniOSce) Association.
+# Copyright 2026 OmniOS Community Edition (OmniOSce) Association.
 #
 
 #
@@ -80,6 +80,11 @@ UEFI_SIZE=4400K
 # Output file
 
 DST_ISO=$BUILDSEND_MP/${VERSION}.iso
+
+# ISO 9660 volume ID. This must consist only of upper-case letters, digits
+# and underscores in order to comply with ECMA-119 rules, and xorriso warns
+# otherwise.
+typeset -u VOLID="OMNIOS_${VERSION//[!A-Za-z0-9_]/_}"
 
 # Source of files needed for build
 
@@ -300,6 +305,16 @@ if [ -n "$UEFI_SIZE" ]; then
 	rmdir $UEFI_ROOT
 	lofiadm -d $LOFI_UEFI
 
+	# Also place a copy of the EFI System Partition tree into the ISO
+	# filesystem itself. This is not used when booting from the ISO or the
+	# hybrid USB image, but some tools prepare a USB stick by extracting the
+	# contents of an ISO onto a FAT filesystem and these rely on the ISO
+	# containing /efi/boot.
+	stage "Adding EFI System Partition tree to ISO root"
+	mkdir -p $ISO_ROOT/efi/boot
+	cp ${COMP_loader32_efi} $ISO_ROOT/efi/boot/bootia32.efi
+	cp ${COMP_loader64_efi} $ISO_ROOT/efi/boot/bootx64.efi
+
 	stage "Building ISO"
 
 	mkisofs \
@@ -309,11 +324,8 @@ if [ -n "$UEFI_SIZE" ]; then
 		-untranslated-filenames \
 		-omit-period \
 		-disable-deep-relocation \
-		-allow-multidot \
-		-no-iso-translate \
-		-cache-inodes \
 		\
-		-volid "OmniOS $VERSION" \
+		-volid "$VOLID" \
 		-output $DST_ISO \
 		\
 		-eltorito-catalog .catalog \
@@ -367,11 +379,8 @@ else
 		-untranslated-filenames \
 		-omit-period \
 		-disable-deep-relocation \
-		-allow-multidot \
-		-no-iso-translate \
-		-cache-inodes \
 		\
-		-volid "OmniOS $VERSION" \
+		-volid "$VOLID" \
 		-output $DST_ISO \
 		\
 		-eltorito-catalog .catalog \
